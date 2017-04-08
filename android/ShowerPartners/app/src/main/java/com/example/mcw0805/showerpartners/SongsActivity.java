@@ -26,6 +26,7 @@ public class SongsActivity extends AppCompatActivity {
     private List<String> songsList;
     private ArrayAdapter<String> songsAdaptor;
     private Button backHomeButton;
+    private Button clearButton;
     private DatabaseReference mRootRef;
     private DatabaseReference mMusicRef;
     private DatabaseReference mMainSongRef;
@@ -43,6 +44,8 @@ public class SongsActivity extends AppCompatActivity {
                 goBackHome();
             }
         });
+
+        clearButton = (Button) findViewById(R.id.clear_btn);
 
         songsLv = (ListView) findViewById(R.id.songs_list);
 
@@ -96,6 +99,13 @@ public class SongsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String songName = songsList.get(position);
                 mMainSongRef.setValue(musicMap.get(songName));
+            }
+        });
+
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMainSongRef.setValue(false);
             }
         });
 
