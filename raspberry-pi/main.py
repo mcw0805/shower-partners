@@ -1,6 +1,7 @@
 import json
 import uuid
 import os
+import thread
 import random
 from os import listdir
 from os.path import isfile, join
@@ -33,9 +34,23 @@ GPIO.output(12,GPIO.LOW)
 is_occupied = False
 get_out = False
 
+def play_music():
+    song_path = "Shake\ It\ Off.mp3"
+    volume = -1000
+    full_path = "music_samples/" + song_path
+    command = "omxplayer --vol " + str(volume) + " " + full_path
+    # print(command)
+    os.system(command)
+
+thread.start_new_thread(play_music, ())
+
 while True:
     button_input_state = GPIO.input(32) #Read and store value of input to a variable
     is_pressed = not button_input_state
+
+    
+
+    
     if is_pressed != is_occupied:
         is_occupied = is_pressed
         firebase.database().child("showers").child(this_shower_id).child("is_occupied").set(is_occupied)
@@ -53,6 +68,8 @@ while True:
             GPIO.output(12,GPIO.HIGH)
         else:
             GPIO.output(12,GPIO.LOW)
+    
+
 
 
         
