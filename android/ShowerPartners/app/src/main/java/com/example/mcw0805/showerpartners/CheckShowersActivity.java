@@ -33,8 +33,6 @@ public class CheckShowersActivity extends AppCompatActivity {
     private DatabaseReference mRootRef;
     private DatabaseReference mShowersRef;
     private Map<String, String> showerMap;
-    private Map<String, String> reverseShowerMap;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +40,6 @@ public class CheckShowersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_check_showers);
 
         showerMap = new HashMap<>();
-        reverseShowerMap = new HashMap<>();
 
         //instantiates Button, set listener
         backHomeButton = (Button) findViewById(R.id.back_home_btn);
@@ -79,13 +76,12 @@ public class CheckShowersActivity extends AppCompatActivity {
                 String name = (String) shower.get("name");
                 Boolean occupation = (Boolean) shower.get("is_occupied");
                 showerMap.put(name, dataSnapshot.getKey());
-                reverseShowerMap.put(dataSnapshot.getKey(), name);
 
                 if (occupation) {
                     if (!occupiedShowersList.contains(name)) {
                         try {
                             occupiedShowersList.remove(name);
-                        } catch(NoSuchElementException ne) {
+                        } catch (NoSuchElementException ne) {
 
                         }
                         showerOccupiedAdaptor.add(name);
@@ -112,7 +108,6 @@ public class CheckShowersActivity extends AppCompatActivity {
                         showerEmptyAdaptor.notifyDataSetChanged();
                         showerOccupiedAdaptor.remove(name);
                         showerOccupiedAdaptor.notifyDataSetChanged();
-
                     }
 
                 } else {
@@ -123,8 +118,6 @@ public class CheckShowersActivity extends AppCompatActivity {
                         showerEmptyAdaptor.notifyDataSetChanged();
                     }
                 }
-
-
 
             }
 
@@ -162,6 +155,5 @@ public class CheckShowersActivity extends AppCompatActivity {
         Intent goBackHomeIntent = new Intent(CheckShowersActivity.this, MainActivity.class);
         startActivity(goBackHomeIntent);
     }
-
 
 }
