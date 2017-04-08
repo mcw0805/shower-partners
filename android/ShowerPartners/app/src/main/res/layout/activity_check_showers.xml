@@ -7,23 +7,38 @@
     tools:context="com.example.mcw0805.showerpartners.CheckShowersActivity">
 
     <TextView
-        android:id="@+id/showers"
+        android:id="@+id/shower_empty_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="20dp"
-        android:text="Shower Booth List"
-        android:textSize="20dp"
-        android:layout_alignParentTop="true"
+        android:layout_marginTop="11dp"
+        android:text="Empty Shower Booths"
+        android:layout_marginStart="16dp"
         android:layout_alignParentStart="true" />
 
+
     <ListView
-        android:id="@+id/shower_list"
+        android:id="@+id/empty_shower_list"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
-        android:layout_below="@+id/showers"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="12dp" />
+        android:layout_height="200dp"
+        android:layout_below="@+id/shower_empty_header"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/shower_occupied_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Occupied Shower Booths"
+        android:layout_below="@+id/empty_shower_list"
+        android:layout_alignStart="@+id/shower_empty_header"
+        android:layout_marginTop="11dp" />
+
+    <ListView
+        android:id="@+id/occupied_shower_list"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/shower_occupied_header"
+        android:layout_alignParentStart="true" />
+
 
     <Button
         android:id="@+id/back_home_btn"
@@ -36,5 +51,8 @@
 
 
 </RelativeLayout>
+
+
+
 
 

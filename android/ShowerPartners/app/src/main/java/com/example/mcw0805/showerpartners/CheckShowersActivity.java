@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -16,19 +16,24 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class CheckShowersActivity extends AppCompatActivity {
 
     private Button backHomeButton;
-    private ListView showersLv;
-    private List<String> showersList;
-    private ArrayAdapter<String> showerAdapter;
+    private ListView showerOccupiedLv;
+    private ListView showerEmptyLv;
+    private List<String> occupiedShowersList;
+    private List<String> emptyShowersList;
+    private ArrayAdapter<String> showerOccupiedAdaptor;
+    private ArrayAdapter<String> showerEmptyAdaptor;
     private DatabaseReference mRootRef;
     private DatabaseReference mShowersRef;
-    private DatabaseReference mIsOccupiedRef;
-    ;
+    private Map<String, String> showerMap;
+    private Map<String, String> reverseShowerMap;
 
 
     @Override
@@ -36,6 +41,10 @@ public class CheckShowersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_showers);
 
+        showerMap = new HashMap<>();
+        reverseShowerMap = new HashMap<>();
+
+        //instantiates Button, set listener
         backHomeButton = (Button) findViewById(R.id.back_home_btn);
         backHomeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,12 +53,22 @@ public class CheckShowersActivity extends AppCompatActivity {
             }
         });
 
-        showersList = new ArrayList<>();
-        showersLv = (ListView) findViewById(R.id.shower_list);
+        //instantiates ArrayList
+        occupiedShowersList = new ArrayList<>();
+        emptyShowersList = new ArrayList<>();
 
-        showerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, showersList);
-        showersLv.setAdapter(showerAdapter);
+        //instantiates ListView
+        showerOccupiedLv = (ListView) findViewById(R.id.occupied_shower_list);
+        showerEmptyLv = (ListView) findViewById(R.id.empty_shower_list);
 
+        //instantiates and sets Adaptor
+        showerOccupiedAdaptor = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, occupiedShowersList);
+        showerOccupiedLv.setAdapter(showerOccupiedAdaptor);
+
+        showerEmptyAdaptor = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, emptyShowersList);
+        showerEmptyLv.setAdapter(showerEmptyAdaptor);
+
+        //Retreive data from Firebase
         mRootRef = FirebaseDatabase.getInstance().getReference();
         mShowersRef = mRootRef.child("showers");
 
@@ -58,17 +77,54 @@ public class CheckShowersActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Map<String, Object> shower = (Map<String, Object>) dataSnapshot.getValue();
                 String name = (String) shower.get("name");
-                String status = null;
                 Boolean occupation = (Boolean) shower.get("is_occupied");
+                showerMap.put(name, dataSnapshot.getKey());
+                reverseShowerMap.put(dataSnapshot.getKey(), name);
 
-                status = occupation ? "Occupied" : "Empty";
+                if (occupation) {
+                    if (!occupiedShowersList.contains(name)) {
+                        try {
+                            occupiedShowersList.remove(name);
+                        } catch(NoSuchElementException ne) {
 
-                showerAdapter.add(name + "           " + "Status: " + status);
-                showerAdapter.notifyDataSetChanged();
+                        }
+                        showerOccupiedAdaptor.add(name);
+                        showerOccupiedAdaptor.notifyDataSetChanged();
+                    }
+                } else {
+                    if (!emptyShowersList.contains(name)) {
+                        showerEmptyAdaptor.add(name);
+                        showerEmptyAdaptor.notifyDataSetChanged();
+                    }
+                }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Map<String, Object> shower = (Map<String, Object>) dataSnapshot.getValue();
+                String name = (String) shower.get("name");
+                Boolean occupation = (Boolean) shower.get("is_occupied");
+                Boolean out = (Boolean) shower.get("get_out");
+
+                if (!occupation) {
+                    if (!emptyShowersList.contains(name)) {
+                        showerEmptyAdaptor.add(name);
+                        showerEmptyAdaptor.notifyDataSetChanged();
+                        showerOccupiedAdaptor.remove(name);
+                        showerOccupiedAdaptor.notifyDataSetChanged();
+
+                    }
+
+                } else {
+                    if (!occupiedShowersList.contains(name)) {
+                        showerOccupiedAdaptor.add(name);
+                        showerOccupiedAdaptor.notifyDataSetChanged();
+                        showerEmptyAdaptor.remove(name);
+                        showerEmptyAdaptor.notifyDataSetChanged();
+                    }
+                }
+
+
 
             }
 
@@ -88,7 +144,16 @@ public class CheckShowersActivity extends AppCompatActivity {
             }
         });
 
-        //mIsOccupiedRef = mShowersRef.child("is_occupied");
+        showerOccupiedLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String shower = occupiedShowersList.get(position);
+//                occupiedShowersList.remove(shower);
+                mShowersRef.getRef().child(showerMap.get(shower)).child("get_out").setValue(true);
+                showerOccupiedAdaptor.notifyDataSetChanged();
+            }
+        });
 
 
     }
