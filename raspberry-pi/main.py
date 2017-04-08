@@ -36,7 +36,6 @@ GPIO.output(12,GPIO.LOW)
 is_occupied = False
 get_out = False
 
-song_path = "Shake\ It\ Off.mp3"
 is_playing = False
 
 
@@ -45,8 +44,11 @@ def play_music(target_song_path):
     print("SONG PATH")
     print(target_song_path)
     full_path = os.path.join(script_dir, "music_samples/" + target_song_path)
-    full_path = full_path.replace(" ", "\\ ")
     print(full_path)
+    # full_path = full_path.replace(" ", "\ ")
+    print(full_path)
+    #full_path = "/home/pi/Projects/shower-partners/raspberry-pi/music_samples/Shake It Off.mp3"
+    #print(full_path)
     command = "omxplayer --vol " + str(volume) + " " + full_path
     # print(command)
     is_playing = True
@@ -82,6 +84,7 @@ while True:
         song_path = firebase.database().child("main_song_path").get().val()
         if song_path:
             # print(song_path)
+            is_playing = True
             thread.start_new_thread(play_music, (song_path, ))
             firebase.database().child("main_song_path").set(False)
 
