@@ -51,6 +51,7 @@ def play_music(target_song_path):
     #print(full_path)
     command = "omxplayer --vol " + str(volume) + " " + full_path
     # print(command)
+    song_path = firebase.database().child("main_song_path").set(False)
     is_playing = True
     song_path = False
     os.system(command)
