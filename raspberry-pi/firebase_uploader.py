@@ -18,7 +18,7 @@ db = firebase.database()
 
 storage = firebase.storage()
 
-to_push={"YO":"ABCDEFG"}
+this_shower_id = "shower_1"
 
-pushRef = db.child("test")
-pushRef.set(to_push)
+showerRef = db.child("showers").child(this_shower_id)
+showerRef.child("is_occupied").set(True)
