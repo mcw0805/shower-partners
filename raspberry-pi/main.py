@@ -11,8 +11,9 @@ import pyrebase
 import RPi.GPIO as GPIO          #Import GPIO library
 import time                      #Import time library
 
+script_dir = os.path.dirname(__file__)
 
-configFile = open('firebase-config.json', 'r+')
+configFile = open(os.path.join(script_dir, 'firebase-config.json'), 'r+')
 config = json.load(configFile)
 
 firebase = pyrebase.initialize_app(config)
@@ -34,15 +35,17 @@ GPIO.output(12,GPIO.LOW)
 is_occupied = False
 get_out = False
 
+song_path = "Shake\ It\ Off.mp3"
+is_playing = False
+
+
 def play_music():
-    song_path = "Shake\ It\ Off.mp3"
     volume = -1000
-    full_path = "music_samples/" + song_path
+    full_path = os.path.join(script_dir, "music_samples/" + song_path)
     command = "omxplayer --vol " + str(volume) + " " + full_path
     # print(command)
     os.system(command)
 
-thread.start_new_thread(play_music, ())
 
 while True:
     button_input_state = GPIO.input(32) #Read and store value of input to a variable
@@ -68,6 +71,11 @@ while True:
             GPIO.output(12,GPIO.HIGH)
         else:
             GPIO.output(12,GPIO.LOW)
+    if not is_playing:
+        thread.start_new_thread(play_music, ())
+        is_playing = True
+
+
     
 
 
