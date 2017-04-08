@@ -10,34 +10,33 @@
         android:id="@+id/shower_empty_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
-        android:text="Empty Shower Booths"
+        android:layout_alignParentStart="true"
         android:layout_marginStart="16dp"
-        android:layout_alignParentStart="true" />
-
+        android:layout_marginTop="11dp"
+        android:text="Empty Shower Booths" />
 
     <ListView
         android:id="@+id/empty_shower_list"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_below="@+id/shower_empty_header"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/shower_empty_header" />
 
     <TextView
         android:id="@+id/shower_occupied_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Occupied Shower Booths"
-        android:layout_below="@+id/empty_shower_list"
         android:layout_alignStart="@+id/shower_empty_header"
-        android:layout_marginTop="11dp" />
+        android:layout_below="@+id/empty_shower_list"
+        android:layout_marginTop="11dp"
+        android:text="Occupied Shower Booths" />
 
     <ListView
         android:id="@+id/occupied_shower_list"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_below="@+id/shower_occupied_header"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/shower_occupied_header" />
 
 
     <Button
