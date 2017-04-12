@@ -1,2 +1,4 @@
-# shower-partners
-Never get divorced because of showers
+# Shower Partners
+The rather suggestively named 'Shower Partners' is a platform for changing the living hell that is finding a time and place to shower when living in a freshman dorm. The system is based around a small Raspberry Pi based module that is mounted above showerheads with a water sensor to detect when a shower is occupied, and an Android application that tells users which showers are free. The module also has a light that can be activated through the Android application in order to tell the shower's occupant that they are taking too long. It also has a speaker, because singing is clearly the most fun anyone can have in the shower.
+
+Created by Chaewon Min and Deb Banerji at the Georgia Tech Hardware Hackathon 2017
