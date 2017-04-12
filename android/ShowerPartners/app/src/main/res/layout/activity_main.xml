@@ -10,10 +10,10 @@
         android:id="@+id/checkShowersButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Check Showers ( ͡° ͜ʖ ͡°)"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="180dp"
-        android:text="Check Showers ( ͡° ͜ʖ ͡°)" />
+        android:layout_marginTop="290dp" />
 
     <Button
         android:id="@+id/musicButton"
@@ -23,5 +23,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:text="Music ♫♫" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/drop"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
